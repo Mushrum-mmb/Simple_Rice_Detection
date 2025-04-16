@@ -137,10 +137,34 @@ def rice_detection_combined(img):
     # Calculate total grain count from both methods
     total_count = watershed_count + contour_only_count
 
-    # Add total count annotation to the result image
-    cv2.putText(combined_result, f"Total Rice Grains: {total_count}",
-                (20, 80), cv2.FONT_HERSHEY_SIMPLEX, 3, (255, 0, 0), 2)
+    # Get image dimensions
+    height, width = combined_result.shape[:2]
 
+    # Set text content
+    text = f"Total Rice Grains: {total_count}"
+
+    # Auto-scale font size based on image width
+    font_scale = width / 1000  # Adjust this ratio as needed
+
+    # Calculate text size to center it
+    text_size = cv2.getTextSize(text, cv2.FONT_HERSHEY_SIMPLEX, font_scale, 2)[0]
+    text_x = (width - text_size[0]) // 2  # Center horizontally
+    text_y = 50 + text_size[1]  # Position near top with padding
+
+    # Add background for better readability
+    text_bg_padding = 10
+    text_bg_coords = (
+        text_x - text_bg_padding, 
+        text_y - text_size[1] - text_bg_padding,
+        text_x + text_size[0] + text_bg_padding, 
+        text_y + text_bg_padding
+    )
+
+    # Add total count annotation to the result image
+    cv2.putText(combined_result, text,
+                (text_x, text_y), cv2.FONT_HERSHEY_SIMPLEX, 
+                font_scale, (255, 255, 255), 2)  # White text
+    
     # Return the final annotated image with grain count
     return combined_result
 
