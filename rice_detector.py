@@ -163,7 +163,7 @@ def rice_detection_combined(img):
     # Add total count annotation to the result image
     cv2.putText(combined_result, text,
                 (text_x, text_y), cv2.FONT_HERSHEY_SIMPLEX, 
-                font_scale, (255, 255, 255), 2)  # White text
+                font_scale, (255, 255, 255), 3)  # White text
     
     # Return the final annotated image with grain count
     return combined_result
